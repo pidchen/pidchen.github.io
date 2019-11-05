@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="ubuntu," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Nvidia driver 410 + CUDA10.0 + cudnn7.4.2 + tensorflow-gpu1.13.1 + python3.6.8 on Ubuntu16.04(by ssh)###前言： 由于本人近期准备在深度学习上搞搞事情，正好实验室有一台搭载4个k80显卡的服务器，于是就开始了入坑的旅程。刚开始接手这个服务器，师兄给告知不知为什么在ubuntu登陆界面会出现循环登陆">
+<meta name="keywords" content="ubuntu">
+<meta property="og:type" content="article">
+<meta property="og:title" content="搭建ubuntu服务器">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;06&#x2F;25&#x2F;%E6%90%AD%E5%BB%BAubuntu%E6%9C%8D%E5%8A%A1%E5%99%A8&#x2F;index.html">
+<meta property="og:site_name" content="peace&amp;love">
+<meta property="og:description" content="Nvidia driver 410 + CUDA10.0 + cudnn7.4.2 + tensorflow-gpu1.13.1 + python3.6.8 on Ubuntu16.04(by ssh)###前言： 由于本人近期准备在深度学习上搞搞事情，正好实验室有一台搭载4个k80显卡的服务器，于是就开始了入坑的旅程。刚开始接手这个服务器，师兄给告知不知为什么在ubuntu登陆界面会出现循环登陆">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http:&#x2F;&#x2F;pv5gmiri9.bkt.clouddn.com&#x2F;%E7%89%88%E6%9C%AC%E5%AF%B9%E5%BA%94.png">
+<meta property="og:image" content="http:&#x2F;&#x2F;pv5gmiri9.bkt.clouddn.com&#x2F;nvidia.png">
+<meta property="og:updated_time" content="2019-07-25T03:06:12.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http:&#x2F;&#x2F;pv5gmiri9.bkt.clouddn.com&#x2F;%E7%89%88%E6%9C%AC%E5%AF%B9%E5%BA%94.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/06/25/搭建ubuntu服务器/"/>
+
+
+
+
+
+  <title>搭建ubuntu服务器 | peace&love</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-138537225-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta custom-logo">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">peace&love</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Welcome to my blog!</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/25/%E6%90%AD%E5%BB%BAubuntu%E6%9C%8D%E5%8A%A1%E5%99%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="csc">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://pv5gmiri9.bkt.clouddn.com/20151226123802_4ArWd.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="peace&love">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">搭建ubuntu服务器</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-06-25T10:59:44+08:00">
+                2019-06-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 阅读次数
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="Nvidia-driver-410-CUDA10-0-cudnn7-4-2-tensorflow-gpu1-13-1-python3-6-8-on-Ubuntu16-04-by-ssh"><a href="#Nvidia-driver-410-CUDA10-0-cudnn7-4-2-tensorflow-gpu1-13-1-python3-6-8-on-Ubuntu16-04-by-ssh" class="headerlink" title="Nvidia driver 410 + CUDA10.0 + cudnn7.4.2 + tensorflow-gpu1.13.1 + python3.6.8 on Ubuntu16.04(by ssh)"></a>Nvidia driver 410 + CUDA10.0 + cudnn7.4.2 + tensorflow-gpu1.13.1 + python3.6.8 on Ubuntu16.04(by ssh)</h2><p>###前言：</p>
+<p><em>由于本人近期准备在深度学习上搞搞事情，正好实验室有一台搭载4个k80显卡的服务器，于是就开始了入坑的旅程。<br>刚开始接手这个服务器，师兄给告知不知为什么在ubuntu登陆界面会出现循环登陆的问题，由于linux小菜的我并不知道师兄们做了啥，于是在师兄备份过自己实验数据的情况下重装系统，由于对UI的极度热爱，又因为了解到ubuntu的桌面版和服务器版功能相差无几，而且自带界面，因此我选择给服务器装了ubuntu16.04-desktop版。</em></p>
+<blockquote>
+<p>安装完系统，我们进入深度学习环境搭建的正题。<br>###摘要<br>先看一下cuda, cudnn, tensorflow, python等对应版本（可以说这是环境搭建最烦的地方，一点都不智能～）<img src="http://pv5gmiri9.bkt.clouddn.com/%E7%89%88%E6%9C%AC%E5%AF%B9%E5%BA%94.png" alt="版本对应"></p>
+</blockquote>
+<ul>
+<li>1.13.1及以后版本已经可以在python3.7上运行，无需再手动设置python3.6版本或降级。当然我们还是采用python3.6比较稳定，使用anaconda进行管理多版本python环境也很方便。</li>
+<li>Tensorflow 【1.13.1】 只能兼容 【CUDA 10.0】！注意是10.0，不是10.1，更不是官网说的9.0！</li>
+<li>GPU驱动需要在 【410.xx】 及以上，注意匹配 【Notebook/Desktop】 版本。</li>
+<li>CUDA 9.0和10.0 可以共存，但是注意设置环境变量，调用正确的版本。</li>
+</ul>
+<p>####本服务器硬件</p>
+<ul>
+<li>cpu: Intel(R) Xeon(R) CPU E5-2640 v4 @ 2.40GHz</li>
+<li>gpu: 4 * Tesla k80 + 联想服务器自带的垃圾集成显卡(compatible controller: Matrox Electronics Systems Ltd. G200eR2 (rev 01))</li>
+<li>RAM: 64GB</li>
+<li>安装平台：ubuntu16.04 + Anaconda3-2019.03-Linux-x86_64.sh</li>
+</ul>
+<p>###anaconda安装<br>在官网上下载到<a href="https://www.anaconda.com/distribution/" target="_blank" rel="noopener">Anaconda3-2019.03-Linux-x86_64.sh</a>后，cd到下载目录：<br><code>$sudo bash Anaconda3-2019.03-Linux-x86_64.sh</code><br>如果提示输入安装路径，可以按默认路径，也可以自行设置。<br>一个使用Linux的良好习惯，把安装的所有用户组共享的应用都放在 /usr/local 下。所以我设置的安装路径是：<br><code>/usr/local/anaconda3</code><br>这里我们选择默认，安装在当前目录下。<br>一直按Enter直到提示输入”yes“ or “no”，然后输入“yes”。<br>如果提示是否Configure，选择“yes”。如果提示是否安装VS之类的，根据需要决定，我选择“no”。<br>####配置python环境变量</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#编辑bash配置文件</span><br><span class="line">$vi ~/.bashrc</span><br><span class="line">#在末尾添加(无引号)</span><br><span class="line">&quot;export PATH=&quot;&lt;你的安装目录&gt;/bin:$PATH&quot;</span><br><span class="line">#source一下</span><br><span class="line">$source ~/.bashrc</span><br></pre></td></tr></table></figure>
+
+<p>测试：</p>
+<ol>
+<li>输入python查看版本</li>
+<li>quit()或exit()退出python</li>
+</ol>
+<p>###安装nvidia驱动（前方高能）<br>由于本级刚开始使用的是ubuntu自带的通用驱动（很垃圾，整个图像化界面十分卡顿），没有安装nvidia驱动，nvidia-smi命令无法使用。于是我开始了无止境的驱动安装卸载。。。<br>为什么呢？因为我按照网上教程成功在nvidia官网下载对应k80的410驱动，但是！我以为这个同笔记本电脑一样同时支持显示，于是按照要求重启，于是就出现了登陆界面循环登入，也终于明白师兄们的情况怎么来的。接着使用网上一系列方法：关闭lightdm，禁用Nouveau驱动（自带的）等等。问题却无动于衷。于是只有进入ttys（即终端）卸载了nvidia驱动，切换回了自带的驱动。终于又回到了熟悉的UI，又在网上搜罗着各种方法，尝试着找到根源，并解决这个问题。于是在服务器前待了一天又一天，终于在第二天晚上实在受不了那10000+分贝的声响，我放弃了解决这个问题。<br>但也算找到了原因所在：k80 这种服务级显卡对界面本来就支持不好，所以换显卡驱动解决不了这种驱动（也就是之前能显示是用的服务器自带的集成显卡）。<br>在室友的指导下我了解了下<strong><em>ssh, rz, sz, scp</em></strong>等一些列高端玩家使用的命令。<br>于是我决定放弃习惯的UI，转入终端玩家。<br>给服务器装上ssh，（我）windows上使用xshell，macos使用zen term lite，通过ssh输入用户名和密码连接到服务器（具体操作网上一大堆，也很简单）。</p>
+<ul>
+<li>添加ppa<br>– <code>$sudo add-apt-repository ppa:graphics-drivers/ppa</code><br>– <code>sudo apt-get update</code></li>
+<li>搜索推荐的驱动<br>– <code>$ubuntu-drivers devices</code> </li>
+<li>安装驱动<br>– <code>$sudo apt-get install nvidia-410</code></li>
+<li>重启</li>
+<li>查看<img src="http://pv5gmiri9.bkt.clouddn.com/nvidia.png" alt="nvidia"></li>
+</ul>
+<p><em>这里我是提前装好了cuda10.0（无驱动版），写在👇，影响不大</em></p>
+<p>###CUDA10.0（无驱动版）安装<br>目前NVIDIA提供最新的CUDA Toolkit版本是10.1，但是Tensoflow 1.13并不能在10.1版本运行。我们需要下载 10.0版本。<br>1）去<a href="https://developer.nvidia.com/cuda-10.0-download-archive?target_os=Linux&target_arch=x86_64&target_distro=Ubuntu&target_version=1604&target_type=deblocal" target="_blank" rel="noopener">官网下载</a>选择Linux，x86_64，Ubuntu，16.04，deb (local)，选择Download，文件比较大。<br>2）按照官方指示，安装cuda10.0</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$sudo dpkg -i cuda-repo-ubuntu1604-10-0-local-10.0.130-410.48_1.0-1_amd64.deb</span><br><span class="line">$sudo apt-key add /var/cuda-repo-&lt;version&gt;/7fa2af80.pub</span><br><span class="line">$sudo apt-get update</span><br><span class="line">$sudo apt-get install cuda</span><br></pre></td></tr></table></figure>
+
+<p>3）重启系统，输入nvidia-smi，即可看见上一节的cuda相关信息</p>
+<p>###配置CUDA<br>1）设置CUDA 10.0的环境变量<br>使用vi编辑配置文件<br><code>$vi /etc/profile</code><br>打开文件后再文件末尾添加：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># CUDA 10.0 path</span><br><span class="line">export PATH=$PATH:/usr/local/cuda-10.0/bin</span><br><span class="line">export CUDADIR=/usr/local/cuda-10.0</span><br><span class="line">export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda-10.0/lib64</span><br></pre></td></tr></table></figure>
+
+<p>以上的这些export命令设置了CUDA 10.0的路径作为环境变量，当系统启动时，CUDA 10.0的路径就被指定，需要调用时，就会从用户指定的路径中寻找。<br>2）注释掉其它版本CUDA的环境变量<br>如果有其它版本的CUDA共存：记得注释掉其他CUDA，防止出错。例如本机有CUDA 9.2共存时，将所有9.2相关的export命令注释掉（相关行前面加#）。</p>
+<p>###安装cudnn<br>1）下载<br>cuDNN的安装很简单，但是需要在NVIDIA官网注册成为开发者。cuDNN的官网链接：<a href="https://developer.nvidia.com/cudnn" target="_blank" rel="noopener">https://developer.nvidia.com/cudnn</a><br>注册之后，选择CUDA 10.0对应的版本，下载三个.deb文件：<br>文件1（cuDNN runtime library）<br>文件2（cuDNN developer library）<br>文件3（cuDNN documentations）</p>
+<p>2）安装cudnn<br>cd到下载目录，分别运行<code>sudo dpkg -i &lt;file n&gt;</code>安装三个deb文件。</p>
+<p>###安装tensorflow-gpu 1.13.1<br>1）首先创建一个专门用于深度学习的环境<br><code>$conda create -n tf-gpu python==3.6</code><br>2）进入这个环境并安装tensorflow</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$conda activate tf-gpu</span><br><span class="line">$pip install tensorflow-gpu==1.13.1</span><br></pre></td></tr></table></figure>
+
+<p>注意1.13.1版本的tensorflow-gpu需要最新的numpy 1.16.2作为支持，更新numpy：<br><code>$pip install --upgrade numpy</code></p>
+<blockquote>
+<p>tips:<br>pip下载如何更换为国内源：<br>临时使用：可以在使用pip的时候加参数-i <a href="https://pypi.tuna.tsinghua.edu.cn/simple" target="_blank" rel="noopener">https://pypi.tuna.tsinghua.edu.cn/simple</a><br>例如：这样就会从清华这边的镜像去安装numpy库<br>pip install -i <a href="https://pypi.tuna.tsinghua.edu.cn/simple" target="_blank" rel="noopener">https://pypi.tuna.tsinghua.edu.cn/simple</a> numpy<br>永久修改，一劳永逸：分Linux与windows<br>Linux: 修改 ~/.pip/pip.conf (没有就创建一个)， 修改 index-url至tuna，换源为国内镜像，内容如下：<br>[global]<br>index-url = <a href="https://pypi.tuna.tsinghua.edu.cn/simple" target="_blank" rel="noopener">https://pypi.tuna.tsinghua.edu.cn/simple</a><br>windows: 直接在user目录中创建一个pip目录，如：C:\Users\xx\pip，新建文件pip.ini，内容如下:<br>[global]<br>index-url = <a href="https://pypi.tuna.tsinghua.edu.cn/simple" target="_blank" rel="noopener">https://pypi.tuna.tsinghua.edu.cn/simple</a></p>
+</blockquote>
+<blockquote>
+<blockquote>
+<p><a href="https://zhuanlan.zhihu.com/p/62899936" target="_blank" rel="noopener">关于国内源那点事</a><br><a href="https://mirrors.tuna.tsinghua.edu.cn/news/#close-anaconda-service" target="_blank" rel="noopener">清华源官方说明</a></p>
+<blockquote>
+<p>其他国内源很大部分上游源都是清华，因而前段时间害清华源被封了。。。</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>###测试tensorflow<br>控制台输入python，回车，依次输入以下命令测试tensorflow及其版本：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">import tensorflow as tf</span><br><span class="line">print(tf.__version__)</span><br></pre></td></tr></table></figure>
+
+<p>如果返回‘1.13.1’表示环境配置成功。</p>
+<p>###完美结束！</p>
+<blockquote>
+<p><a href="https://blog.csdn.net/TianyangQiao/article/details/88284025" target="_blank" rel="noopener">参考博客</a></p>
+</blockquote>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/ubuntu/" rel="tag"># ubuntu</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/05/06/FPN-for-OD-CVPR2017-%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" rel="next" title="FPN for OD(CVPR2017)阅读笔记">
+                <i class="fa fa-chevron-left"></i> FPN for OD(CVPR2017)阅读笔记
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/07/05/ubuntu16%E5%BE%AA%E7%8E%AF%E7%99%BB%E5%BD%95%E9%97%AE%E9%A2%98/" rel="prev" title="ubuntu16循环登录问题">
+                ubuntu16循环登录问题 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="http://pv5gmiri9.bkt.clouddn.com/20151226123802_4ArWd.jpeg"
+                alt="csc" />
+            
+              <p class="site-author-name" itemprop="name">csc</p>
+              <p class="site-description motion-element" itemprop="description">A crazy boy.</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%20%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Nvidia-driver-410-CUDA10-0-cudnn7-4-2-tensorflow-gpu1-13-1-python3-6-8-on-Ubuntu16-04-by-ssh"><span class="nav-number">1.</span> <span class="nav-text">Nvidia driver 410 + CUDA10.0 + cudnn7.4.2 + tensorflow-gpu1.13.1 + python3.6.8 on Ubuntu16.04(by ssh)</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">csc</span>
+
+  
+</div>
+
+
+
+  <!--<div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>-->
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
