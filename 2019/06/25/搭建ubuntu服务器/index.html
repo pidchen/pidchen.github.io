@@ -1,131 +1,53 @@
 <!DOCTYPE html>
-
-
-
-  
-
-
-<html class="theme-next mist use-motion" lang="zh-CN">
+<html lang="zh-CN">
 <head>
-  <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
 
-
-
-
-
-
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
-
-
-
-
-
-
-
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
-
-<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
-
-
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
-
-
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
-
-
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
-
-
-  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
-
-
-
-
-
-  <meta name="keywords" content="ubuntu," />
-
-
-
-
-
-
-
-
-
-
-<meta name="description" content="Nvidia driver 410 + CUDA10.0 + cudnn7.4.2 + tensorflow-gpu1.13.1 + python3.6.8 on Ubuntu16.04(by ssh)###前言： 由于本人近期准备在深度学习上搞搞事情，正好实验室有一台搭载4个k80显卡的服务器，于是就开始了入坑的旅程。刚开始接手这个服务器，师兄给告知不知为什么在ubuntu登陆界面会出现循环登陆">
-<meta name="keywords" content="ubuntu">
+  <meta name="description" content="Nvidia driver 410 + CUDA10.0 + cudnn7.4.2 + tensorflow-gpu1.13.1 + python3.6.8 on Ubuntu16.04(by ssh)###前言： 由于本人近期准备在深度学习上搞搞事情，正好实验室有一台搭载4个k80显卡的服务器，于是就开始了入坑的旅程。刚开始接手这个服务器，师兄给告知不知为什么在ubuntu登陆界面会出现循环登陆">
 <meta property="og:type" content="article">
 <meta property="og:title" content="搭建ubuntu服务器">
-<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;06&#x2F;25&#x2F;%E6%90%AD%E5%BB%BAubuntu%E6%9C%8D%E5%8A%A1%E5%99%A8&#x2F;index.html">
+<meta property="og:url" content="http://yoursite.com/2019/06/25/%E6%90%AD%E5%BB%BAubuntu%E6%9C%8D%E5%8A%A1%E5%99%A8/index.html">
 <meta property="og:site_name" content="peace&amp;love">
 <meta property="og:description" content="Nvidia driver 410 + CUDA10.0 + cudnn7.4.2 + tensorflow-gpu1.13.1 + python3.6.8 on Ubuntu16.04(by ssh)###前言： 由于本人近期准备在深度学习上搞搞事情，正好实验室有一台搭载4个k80显卡的服务器，于是就开始了入坑的旅程。刚开始接手这个服务器，师兄给告知不知为什么在ubuntu登陆界面会出现循环登陆">
-<meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http:&#x2F;&#x2F;pv5gmiri9.bkt.clouddn.com&#x2F;%E7%89%88%E6%9C%AC%E5%AF%B9%E5%BA%94.png">
-<meta property="og:image" content="http:&#x2F;&#x2F;pv5gmiri9.bkt.clouddn.com&#x2F;nvidia.png">
-<meta property="og:updated_time" content="2019-07-25T03:06:12.000Z">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://pv5gmiri9.bkt.clouddn.com/%E7%89%88%E6%9C%AC%E5%AF%B9%E5%BA%94.png">
+<meta property="og:image" content="http://pv5gmiri9.bkt.clouddn.com/nvidia.png">
+<meta property="article:published_time" content="2019-06-25T02:59:44.000Z">
+<meta property="article:modified_time" content="2019-07-25T03:06:12.000Z">
+<meta property="article:author" content="csc">
+<meta property="article:tag" content="ubuntu">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http:&#x2F;&#x2F;pv5gmiri9.bkt.clouddn.com&#x2F;%E7%89%88%E6%9C%AC%E5%AF%B9%E5%BA%94.png">
+<meta name="twitter:image" content="http://pv5gmiri9.bkt.clouddn.com/%E7%89%88%E6%9C%AC%E5%AF%B9%E5%BA%94.png">
+
+<link rel="canonical" href="http://yoursite.com/2019/06/25/%E6%90%AD%E5%BB%BAubuntu%E6%9C%8D%E5%8A%A1%E5%99%A8/">
 
 
-
-<script type="text/javascript" id="hexo.configurations">
-  var NexT = window.NexT || {};
-  var CONFIG = {
-    root: '/',
-    scheme: 'Mist',
-    version: '5.1.4',
-    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
-    fancybox: true,
-    tabs: true,
-    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
-    duoshuo: {
-      userId: '0',
-      author: 'Author'
-    },
-    algolia: {
-      applicationID: '',
-      apiKey: '',
-      indexName: '',
-      hits: {"per_page":10},
-      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
-    }
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
   };
 </script>
-
-
-
-  <link rel="canonical" href="http://yoursite.com/2019/06/25/搭建ubuntu服务器/"/>
-
-
-
-
 
   <title>搭建ubuntu服务器 | peace&love</title>
   
@@ -133,186 +55,148 @@
 
 
 
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-  ga('create', 'UA-138537225-1', 'auto');
-  ga('send', 'pageview');
-</script>
 
 
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
 
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
 
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
 
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
-
-  
-  
-    
-  
-
-  <div class="container sidebar-position-left page-post-detail">
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
     <div class="headband"></div>
 
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-wrapper">
-  <div class="site-meta custom-logo">
-    
-
-    <div class="custom-logo-site-title">
-      <a href="/"  class="brand" rel="start">
-        <span class="logo-line-before"><i></i></span>
-        <span class="site-title">peace&love</span>
-        <span class="logo-line-after"><i></i></span>
-      </a>
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
     </div>
-      
-        <p class="site-subtitle">Csc's blog</p>
-      
   </div>
 
-  <div class="site-nav-toggle">
-    <button>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-    </button>
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">peace&love</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Csc's blog</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
   </div>
 </div>
 
+
+
+
 <nav class="site-nav">
-  
-
-  
-    <ul id="menu" class="menu">
-      
-        
+  <ul id="menu" class="main-menu menu">
         <li class="menu-item menu-item-home">
-          <a href="/%20" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
-            
-            Home
-          </a>
-        </li>
-      
-        
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
         <li class="menu-item menu-item-archives">
-          <a href="/archives/%20" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
-            
-            Archives
-          </a>
-        </li>
-      
 
-      
-    </ul>
-  
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
 
-  
+  </li>
+  </ul>
 </nav>
 
 
 
- </div>
+
+</div>
     </header>
 
-    <main id="main" class="main">
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
       <div class="main-inner">
         <div class="content-wrap">
-          <div id="content" class="content">
+          
+
+          <div class="content post posts-expand">
             
 
-  <div id="posts" class="posts-expand">
     
-
-  
-
   
   
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/25/%E6%90%AD%E5%BB%BAubuntu%E6%9C%8D%E5%8A%A1%E5%99%A8/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
       <meta itemprop="name" content="csc">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="https://i.postimg.cc/HLTgdSXw/duola-a-meng-18.png">
+      <meta itemprop="description" content="Just record some knowledge, if infringement please contact with me deletion.">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="peace&love">
     </span>
-
-    
       <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">搭建ubuntu服务器</h1>
-        
+        <h1 class="post-title" itemprop="name headline">
+          搭建ubuntu服务器
+        </h1>
 
         <div class="post-meta">
-          <span class="post-time">
-            
+            <span class="post-meta-item">
               <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
+                <i class="far fa-calendar"></i>
               </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-06-25T10:59:44+08:00">
-                2019-06-25
-              </time>
-            
+              <span class="post-meta-item-text">发表于</span>
 
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-            <span class="post-meta-divider">|</span>
-            <span class="page-pv"><i class="fa fa-file-o"></i> 阅读次数
-            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+              <time title="创建时间：2019-06-25 10:59:44" itemprop="dateCreated datePublished" datetime="2019-06-25T10:59:44+08:00">2019-06-25</time>
             </span>
-          
-
-          
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-07-25 11:06:12" itemprop="dateModified" datetime="2019-07-25T11:06:12+08:00">2019-07-25</time>
+              </span>
 
           
 
         </div>
       </header>
-    
 
     
     
     
     <div class="post-body" itemprop="articleBody">
-
-      
-      
 
       
         <h2 id="Nvidia-driver-410-CUDA10-0-cudnn7-4-2-tensorflow-gpu1-13-1-python3-6-8-on-Ubuntu16-04-by-ssh"><a href="#Nvidia-driver-410-CUDA10-0-cudnn7-4-2-tensorflow-gpu1-13-1-python3-6-8-on-Ubuntu16-04-by-ssh" class="headerlink" title="Nvidia driver 410 + CUDA10.0 + cudnn7.4.2 + tensorflow-gpu1.13.1 + python3.6.8 on Ubuntu16.04(by ssh)"></a>Nvidia driver 410 + CUDA10.0 + cudnn7.4.2 + tensorflow-gpu1.13.1 + python3.6.8 on Ubuntu16.04(by ssh)</h2><p>###前言：</p>
@@ -334,7 +218,7 @@
 <li>安装平台：ubuntu16.04 + Anaconda3-2019.03-Linux-x86_64.sh</li>
 </ul>
 <p>###anaconda安装<br>在官网上下载到<a href="https://www.anaconda.com/distribution/" target="_blank" rel="noopener">Anaconda3-2019.03-Linux-x86_64.sh</a>后，cd到下载目录：<br><code>$sudo bash Anaconda3-2019.03-Linux-x86_64.sh</code><br>如果提示输入安装路径，可以按默认路径，也可以自行设置。<br>一个使用Linux的良好习惯，把安装的所有用户组共享的应用都放在 /usr/local 下。所以我设置的安装路径是：<br><code>/usr/local/anaconda3</code><br>这里我们选择默认，安装在当前目录下。<br>一直按Enter直到提示输入”yes“ or “no”，然后输入“yes”。<br>如果提示是否Configure，选择“yes”。如果提示是否安装VS之类的，根据需要决定，我选择“no”。<br>####配置python环境变量</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#编辑bash配置文件</span><br><span class="line">$vi ~/.bashrc</span><br><span class="line">#在末尾添加(无引号)</span><br><span class="line">&quot;export PATH=&quot;&lt;你的安装目录&gt;/bin:$PATH&quot;</span><br><span class="line">#source一下</span><br><span class="line">$source ~/.bashrc</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#编辑bash配置文件</span><br><span class="line">$vi ~&#x2F;.bashrc</span><br><span class="line">#在末尾添加(无引号)</span><br><span class="line">&quot;export PATH&#x3D;&quot;&lt;你的安装目录&gt;&#x2F;bin:$PATH&quot;</span><br><span class="line">#source一下</span><br><span class="line">$source ~&#x2F;.bashrc</span><br></pre></td></tr></table></figure>
 
 <p>测试：</p>
 <ol>
@@ -351,17 +235,17 @@
 </ul>
 <p><em>这里我是提前装好了cuda10.0（无驱动版），写在👇，影响不大</em></p>
 <p>###CUDA10.0（无驱动版）安装<br>目前NVIDIA提供最新的CUDA Toolkit版本是10.1，但是Tensoflow 1.13并不能在10.1版本运行。我们需要下载 10.0版本。<br>1）去<a href="https://developer.nvidia.com/cuda-10.0-download-archive?target_os=Linux&target_arch=x86_64&target_distro=Ubuntu&target_version=1604&target_type=deblocal" target="_blank" rel="noopener">官网下载</a>选择Linux，x86_64，Ubuntu，16.04，deb (local)，选择Download，文件比较大。<br>2）按照官方指示，安装cuda10.0</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$sudo dpkg -i cuda-repo-ubuntu1604-10-0-local-10.0.130-410.48_1.0-1_amd64.deb</span><br><span class="line">$sudo apt-key add /var/cuda-repo-&lt;version&gt;/7fa2af80.pub</span><br><span class="line">$sudo apt-get update</span><br><span class="line">$sudo apt-get install cuda</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$sudo dpkg -i cuda-repo-ubuntu1604-10-0-local-10.0.130-410.48_1.0-1_amd64.deb</span><br><span class="line">$sudo apt-key add &#x2F;var&#x2F;cuda-repo-&lt;version&gt;&#x2F;7fa2af80.pub</span><br><span class="line">$sudo apt-get update</span><br><span class="line">$sudo apt-get install cuda</span><br></pre></td></tr></table></figure>
 
 <p>3）重启系统，输入nvidia-smi，即可看见上一节的cuda相关信息</p>
 <p>###配置CUDA<br>1）设置CUDA 10.0的环境变量<br>使用vi编辑配置文件<br><code>$vi /etc/profile</code><br>打开文件后再文件末尾添加：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># CUDA 10.0 path</span><br><span class="line">export PATH=$PATH:/usr/local/cuda-10.0/bin</span><br><span class="line">export CUDADIR=/usr/local/cuda-10.0</span><br><span class="line">export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda-10.0/lib64</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># CUDA 10.0 path</span><br><span class="line">export PATH&#x3D;$PATH:&#x2F;usr&#x2F;local&#x2F;cuda-10.0&#x2F;bin</span><br><span class="line">export CUDADIR&#x3D;&#x2F;usr&#x2F;local&#x2F;cuda-10.0</span><br><span class="line">export LD_LIBRARY_PATH&#x3D;$LD_LIBRARY_PATH:&#x2F;usr&#x2F;local&#x2F;cuda-10.0&#x2F;lib64</span><br></pre></td></tr></table></figure>
 
 <p>以上的这些export命令设置了CUDA 10.0的路径作为环境变量，当系统启动时，CUDA 10.0的路径就被指定，需要调用时，就会从用户指定的路径中寻找。<br>2）注释掉其它版本CUDA的环境变量<br>如果有其它版本的CUDA共存：记得注释掉其他CUDA，防止出错。例如本机有CUDA 9.2共存时，将所有9.2相关的export命令注释掉（相关行前面加#）。</p>
 <p>###安装cudnn<br>1）下载<br>cuDNN的安装很简单，但是需要在NVIDIA官网注册成为开发者。cuDNN的官网链接：<a href="https://developer.nvidia.com/cudnn" target="_blank" rel="noopener">https://developer.nvidia.com/cudnn</a><br>注册之后，选择CUDA 10.0对应的版本，下载三个.deb文件：<br>文件1（cuDNN runtime library）<br>文件2（cuDNN developer library）<br>文件3（cuDNN documentations）</p>
 <p>2）安装cudnn<br>cd到下载目录，分别运行<code>sudo dpkg -i &lt;file n&gt;</code>安装三个deb文件。</p>
 <p>###安装tensorflow-gpu 1.13.1<br>1）首先创建一个专门用于深度学习的环境<br><code>$conda create -n tf-gpu python==3.6</code><br>2）进入这个环境并安装tensorflow</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$conda activate tf-gpu</span><br><span class="line">$pip install tensorflow-gpu==1.13.1</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$conda activate tf-gpu</span><br><span class="line">$pip install tensorflow-gpu&#x3D;&#x3D;1.13.1</span><br></pre></td></tr></table></figure>
 
 <p>注意1.13.1版本的tensorflow-gpu需要最新的numpy 1.16.2作为支持，更新numpy：<br><code>$pip install --upgrade numpy</code></p>
 <blockquote>
@@ -384,317 +268,170 @@
 <p><a href="https://blog.csdn.net/TianyangQiao/article/details/88284025" target="_blank" rel="noopener">参考博客</a></p>
 </blockquote>
 
-      
     </div>
+
     
     
     
 
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-        <div class="post-tags">
-          
-            <a href="/tags/ubuntu/" rel="tag"># ubuntu</a>
-          
-        </div>
-      
-
-      
-      
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2019/05/06/FPN-for-OD-CVPR2017-%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" rel="next" title="FPN for OD(CVPR2017)阅读笔记">
-                <i class="fa fa-chevron-left"></i> FPN for OD(CVPR2017)阅读笔记
-              </a>
-            
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/ubuntu/" rel="tag"># ubuntu</a>
           </div>
 
-          <span class="post-nav-divider"></span>
+        
 
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/07/05/ubuntu16%E5%BE%AA%E7%8E%AF%E7%99%BB%E5%BD%95%E9%97%AE%E9%A2%98/" rel="prev" title="ubuntu16循环登录问题">
-                ubuntu16循环登录问题 <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
 
-      
-      
-    </footer>
-  </div>
-  
-  
-  
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/05/06/FPN-for-OD-CVPR2017-%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" rel="prev" title="FPN for OD(CVPR2017)阅读笔记">
+      <i class="fa fa-chevron-left"></i> FPN for OD(CVPR2017)阅读笔记
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2019/07/05/ubuntu16%E5%BE%AA%E7%8E%AF%E7%99%BB%E5%BD%95%E9%97%AE%E9%A2%98/" rel="next" title="ubuntu16循环登录问题">
+      ubuntu16循环登录问题 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
   </article>
+  
+  
+  
 
-
-
-    <div class="post-spread">
-      
-        <!-- JiaThis Button BEGIN -->
-<div class="jiathis_style">
-<span class="jiathis_txt">分享到：</span>
-<a class="jiathis_button_fav">收藏夹</a>
-<a class="jiathis_button_copy">复制网址</a>
-<a class="jiathis_button_email">邮件</a>
-<a class="jiathis_button_weixin">微信</a>
-<a class="jiathis_button_qzone">QQ空间</a>
-<a class="jiathis_button_tqq">腾讯微博</a>
-<a class="jiathis_button_douban">豆瓣</a>
-<a class="jiathis_button_share">一键分享</a>
-
-<a href="http://www.jiathis.com/share?uid=2140465" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
-<a class="jiathis_counter_style"></a>
-</div>
-<script type="text/javascript" >
-var jiathis_config={
-  data_track_clickback:true,
-  summary:"",
-  shortUrl:false,
-  hideMore:false
-}
-</script>
-<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=" charset="utf-8"></script>
-<!-- JiaThis Button END -->
-      
-    </div>
-  </div>
 
 
           </div>
           
 
-
-          
-
-  
-
-
-
-        </div>
-        
-          
-  
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
-    </div>
-  </div>
-
-  <aside id="sidebar" class="sidebar">
-    
-    <div class="sidebar-inner">
-
-      
-
-      
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            Table of Contents
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            Overview
-          </li>
-        </ul>
-      
-
-      <section class="site-overview-wrap sidebar-panel">
-        <div class="site-overview">
-          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-            
-              <img class="site-author-image" itemprop="image"
-                src="https://i.postimg.cc/HLTgdSXw/duola-a-meng-18.png"
-                alt="csc" />
-            
-              <p class="site-author-name" itemprop="name">csc</p>
-              <p class="site-description motion-element" itemprop="description">Just record some knowledge, if infringement please contact with me deletion.</p>
-          </div>
-
-          <nav class="site-state motion-element">
-
-            
-              <div class="site-state-item site-state-posts">
-              
-                <a href="/archives/%20%7C%7C%20archive">
-              
-                  <span class="site-state-item-count">6</span>
-                  <span class="site-state-item-name">posts</span>
-                </a>
-              </div>
-            
-
-            
-
-            
-              
-              
-              <div class="site-state-item site-state-tags">
-                
-                  <span class="site-state-item-count">5</span>
-                  <span class="site-state-item-name">tags</span>
-                
-              </div>
-            
-
-          </nav>
-
-          
-
-          
-            <div class="links-of-author motion-element">
-                
-                  <span class="links-of-author-item">
-                    <a href="https://www.zhihu.com/people/chen-shi-cong-75/activities" target="_blank" title="Zhihu">
-                      
-                        <i class="fa fa-fw fa-globe"></i>Zhihu</a>
-                  </span>
-                
-                  <span class="links-of-author-item">
-                    <a href="https://weibo.com/pidchen" target="_blank" title="Weibo">
-                      
-                        <i class="fa fa-fw fa-globe"></i>Weibo</a>
-                  </span>
-                
-                  <span class="links-of-author-item">
-                    <a href="https://github.com/pidchen/pidchen.github.io" target="_blank" title="GitHub">
-                      
-                        <i class="fa fa-fw fa-globe"></i>GitHub</a>
-                  </span>
-                
-            </div>
-          
-
-          
-          
-
-          
-          
-<br>
-<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=511124094&auto=1&height=66"></iframe>
-
-          
-
-        </div>
-      </section>
-
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Nvidia-driver-410-CUDA10-0-cudnn7-4-2-tensorflow-gpu1-13-1-python3-6-8-on-Ubuntu16-04-by-ssh"><span class="nav-number">1.</span> <span class="nav-text">Nvidia driver 410 + CUDA10.0 + cudnn7.4.2 + tensorflow-gpu1.13.1 + python3.6.8 on Ubuntu16.04(by ssh)</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
-      
-
-      
-
-    </div>
-  </aside>
-
-
-        
-      </div>
-    </main>
-
-    <footer id="footer" class="footer">
-      <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
-  <span class="with-love">
-    <i class="fa fa-user"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">csc</span>
-
-  
-</div>
-
-
-
-  <!--<div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>-->
-
-
-
-
-
-
-        
-<div class="busuanzi-count">
-  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-
-  
-    <span class="site-uv">
-      <i class="fa fa-user"></i> 访问人数
-      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
-      
-    </span>
-  
-
-  
-    <span class="site-pv">
-      <i class="fa fa-eye"></i> 总访问量
-      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
-      
-    </span>
-  
-</div>
-
-
-
-
-
-
-
-
-        
-      </div>
-    </footer>
-
-    
-      <div class="back-to-top">
-        <i class="fa fa-arrow-up"></i>
-        
-      </div>
-    
-
-    
-
-  </div>
-
-  
-
-<script type="text/javascript">
-  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
-    window.Promise = null;
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
   }
 </script>
 
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Nvidia-driver-410-CUDA10-0-cudnn7-4-2-tensorflow-gpu1-13-1-python3-6-8-on-Ubuntu16-04-by-ssh"><span class="nav-number">1.</span> <span class="nav-text">Nvidia driver 410 + CUDA10.0 + cudnn7.4.2 + tensorflow-gpu1.13.1 + python3.6.8 on Ubuntu16.04(by ssh)</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">csc</p>
+  <div class="site-description" itemprop="description">Just record some knowledge, if infringement please contact with me deletion.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">6</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">csc</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
 
 
 
 
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
 
 
 
@@ -712,111 +449,8 @@ var jiathis_config={
 
 
 
-  
-  
-    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-  
 
 
-  
-
-
-  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
-
-  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
-
-
-
-  
-  
-
-  
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
-
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
-
-
-
-  
-
-
-  
-
-
-
-
-	
-
-
-
-
-
-  
-
-
-
-
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
-
-
-
-
-  
-
-  
-
-  
-
-  
-  
-
-  
 
   
 
